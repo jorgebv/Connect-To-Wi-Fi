@@ -1,0 +1,7 @@
+﻿<Application
+    x:Class="Connect_To_Wi_Fi.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Connect_To_Wi_Fi">
+
+</Application>

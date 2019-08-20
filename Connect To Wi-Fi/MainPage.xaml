@@ -1,0 +1,61 @@
+﻿<Page
+    x:Class="Connect_To_Wi_Fi.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Connect_To_Wi_Fi"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="AvailableNetworkTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=Ssid}" Padding="5, 5, 5, 5"/>
+            </StackPanel>
+        </DataTemplate>
+        <local:InverseVisibilityConvert x:Key="InverseVisibilityConvert"/>
+    </Page.Resources>
+
+    <Grid Padding="50,50,50,50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".5*"></ColumnDefinition>
+            <ColumnDefinition Width=".5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Visibility="{Binding Path=InitializingUI}">Loading visible networks, please wait a moment</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="0" Visibility="{Binding Path=ShowError}">It doesn't look like you have a Wi-Fi adapter!</TextBlock>
+        <Grid Grid.Row="1" Grid.Column="0" Margin="0, 0, 20, 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ProgressRing Grid.Row="0" IsActive="{Binding Path=ShowProgressRing}"></ProgressRing>
+            <ListView Grid.Row="0" Visibility="{Binding Path=InitializingUI, Converter={Binding Source={StaticResource InverseVisibilityConvert}}}"
+                      ItemsSource="{Binding Path=ListOfNetworks}" ItemTemplate="{StaticResource AvailableNetworkTemplate}"
+                      Name="UIListOfNetworks"/>
+        </Grid>
+        <TextBlock Grid.Row="0" Grid.Column="1">After selecting your network on the left, select your connection method here</TextBlock>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <StackPanel>
+                <StackPanel Margin="0, 20, 0, 40">
+                    <TextBox Text="Username" Name="UIUsernameTextBox"></TextBox>
+                    <TextBox Text="Password" Name="UIPasswordTextBox"></TextBox>
+                    <Button Click="UserPassClicked"
+                            Visibility="{Binding Path=InitializingUI, Converter={Binding Source={StaticResource InverseVisibilityConvert}}}">Connect with username/password</Button>
+                </StackPanel>
+                <StackPanel Margin="0, 0, 0, 40">
+                    <TextBox Text="WPS Pin" Name="UIWpsPinTextBox"></TextBox>
+                    <Button Click="WpsPinClicked"
+                        Visibility="{Binding Path=InitializingUI, Converter={Binding Source={StaticResource InverseVisibilityConvert}}}">Connect with WPS PIN</Button>
+                </StackPanel>
+                <StackPanel Margin="0, 0, 0, 40">
+                    <Button Click="WpsPushClicked"
+                        Visibility="{Binding Path=InitializingUI, Converter={Binding Source={StaticResource InverseVisibilityConvert}}}">Connect with WPS push-button</Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
